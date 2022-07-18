@@ -80,8 +80,8 @@ public class Bot
         Commands = Client.UseCommandsNext(commandsConfig);
 
         // registering commands
-        Commands.RegisterCommands<Moderation>();
-
+        Commands.RegisterCommands<ModerationCommands>();
+        Commands.RegisterCommands<RolesCommands>();
         await Client.ConnectAsync();
 
         await Task.Delay(-1);
