@@ -37,7 +37,7 @@ using DSharpPlus.CommandsNext;
 
 using DSharpPlus.Entities;
 
-namespace BolsoBot.Commands;
+namespace BolsoBot.Commands.Moderation;
 
 
 [Group("admin")] //marks the class as a command group

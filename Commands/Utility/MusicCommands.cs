@@ -27,35 +27,9 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
-using System.Text.RegularExpressions;
+namespace BolsoBot.Commands.Utility;
 
-using DSharpPlus.CommandsNext.Attributes;
-
-using DSharpPlus.CommandsNext;
-
-using DSharpPlus.Entities;
-
-namespace BolsoBot.Commands;
-
-[Group("utility")]
-[Description("Miscellaneous Commands")]
-public class UtilityCommands : BaseCommandModule
+public class Music
 {
-    [Command("avatar")]
-    public async Task GetUserAvatar(CommandContext ctx, DiscordMember member)
-    {
-        await ctx.Channel.SendMessageAsync(member.AvatarUrl);
-    }
 
-    [Command("avatar")]
-    public async Task GetUserAvatar(CommandContext ctx)
-    {
-        await ctx.Channel.SendMessageAsync(ctx.User.AvatarUrl);
-    }
-
-    [Command("Ping")]
-    public async Task Ping(CommandContext ctx)
-    {
-        await ctx.RespondAsync($"Ping :{ctx.Client.Ping}ms");
-    }
 }

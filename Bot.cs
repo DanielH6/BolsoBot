@@ -37,6 +37,10 @@ using DSharpPlus.EventArgs;
 
 using BolsoBot.Commands;
 
+using BolsoBot.Commands.Moderation;
+
+using BolsoBot.Commands.Utility;
+
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;

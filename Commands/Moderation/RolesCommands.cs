@@ -37,7 +37,7 @@ using DSharpPlus.Entities;
 
 using DSharpPlus.CommandsNext.Attributes;
 
-namespace BolsoBot.Commands;
+namespace BolsoBot.Commands.Moderation;
 
 [Group("Roles")]
 [Description("Manage roles")]
