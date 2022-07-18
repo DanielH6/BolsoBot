@@ -82,6 +82,8 @@ public class Bot
         // registering commands
         Commands.RegisterCommands<ModerationCommands>();
         Commands.RegisterCommands<RolesCommands>();
+        Commands.RegisterCommands<UtilityCommands>();
+
         await Client.ConnectAsync();
 
         await Task.Delay(-1);
