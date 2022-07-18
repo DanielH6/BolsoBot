@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 //MIT License
 //
 //Copyright (c) 2022 Daniel
@@ -27,9 +28,94 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
+using DSharpPlus.CommandsNext.Attributes;
+
+using DSharpPlus;
+
+using DSharpPlus.CommandsNext;
+
+using DSharpPlus.Entities;
+
 namespace BolsoBot.Commands;
 
-public class Moderation
-{
 
+[Group("admin")] //marks the class as a command group
+[Description("Administrative Commands")] //description for help purposes
+[RequirePermissions(Permissions.ManageGuild)]
+public class Moderation : BaseCommandModule
+{
+    [
+        Command("setnick"),
+        Description("Gives Someone a New Nickname"),
+        RequirePermissions(Permissions.ManageNicknames)
+    ]
+    public async Task ChangeNickname(CommandContext ctx, DiscordMember member, string newNickname)
+    {
+        //trigger typing indicator
+        await ctx.TriggerTypingAsync().ConfigureAwait(false);
+
+        try
+        {
+            await member.ModifyAsync(member =>
+            {
+                member.Nickname = newNickname;
+                member.AuditLogReason = $"Changed by {ctx.User.Username} {ctx.User.Id}";
+            });
+
+            var emoji = DiscordEmoji.FromName(ctx.Client, ":+1:");
+
+            await ctx.RespondAsync(emoji);
+        }
+        catch (Exception ex)
+        {
+             //oh no
+             var emoji = DiscordEmoji.FromName(ctx.Client, ":-1:");
+
+             await ctx.RespondAsync(emoji);
+        }
+    }
+
+    [
+        Command("kick"),
+        Description("Kick Users"),
+        RequirePermissions(Permissions.KickMembers)
+    ]
+    public async Task KickUser(CommandContext ctx, DiscordMember member, string reason)
+    {
+        //await ctx.TriggerTypingAsync().ConfigureAwait(false);
+        //
+        //try
+        //{
+        //    
+        //}
+        //catch (System.Exception ex)
+        //{
+        //     // TODO
+        //}
+    }
+
+    [
+        Command("ban"),
+        Description("Ban Users"),
+        RequirePermissions(Permissions.BanMembers)
+    ]
+    public async Task BanUser(CommandContext ctx, DiscordMember member,[RemainingText] string reason)
+    {
+        //await ctx.TriggerTypingAsync().ConfigureAwait(false);
+        //
+        //try
+        //{
+        //    await member.BanAsync(1, reason);
+        //    await ctx.RespondAsync($"{member.Id} was banned");
+        //    await member.ModifyAsync(member => 
+        //    {
+        //        member.AuditLogReason = $"Banned by {ctx.User.Username} {ctx.User.Username}, reason {reason}";
+        //    });
+        //}
+        //catch (System.Exception ex)
+        //{
+        //    await ctx.RespondAsync($"Could not ban {member.Username}");
+        //    await ctx.RespondAsync($"{ex}");
+        //}
+    }
 }

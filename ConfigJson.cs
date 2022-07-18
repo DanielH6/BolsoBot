@@ -1,4 +1,4 @@
-﻿//MIT License
+//MIT License
 //
 //Copyright (c) 2022 Daniel
 //
@@ -19,13 +19,15 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
+using Newtonsoft.Json;
+
 namespace BolsoBot;
 
-public class Program
-{ 
-    static void Main()
-    {
-        var bot = new Bot();
-        bot.RunAsync().GetAwaiter().GetResult();
-    }
+public struct ConfigJson
+{
+    [JsonProperty("token")]
+    public string Token { get; private set; }
+    
+    [JsonProperty("prefix")]
+    public string CommandPrefix { get; private set; }
 }
