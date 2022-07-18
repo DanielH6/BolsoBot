@@ -27,9 +27,35 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
-namespace BolsoBot.Commands;
+using System.Text.RegularExpressions;
 
-public class Roles
+using DSharpPlus.CommandsNext.Attributes;
+
+using DSharpPlus.CommandsNext;
+
+using DSharpPlus.Entities;
+
+namespace BolsoBot.Commands.Utility;
+
+[Group("utility")]
+[Description("Miscellaneous Commands")]
+public class UtilityCommands : BaseCommandModule
 {
+    [Command("avatar")]
+    public async Task GetUserAvatar(CommandContext ctx, DiscordMember member)
+    {
+        await ctx.Channel.SendMessageAsync(member.AvatarUrl);
+    }
 
+    [Command("avatar")]
+    public async Task GetUserAvatar(CommandContext ctx)
+    {
+        await ctx.Channel.SendMessageAsync(ctx.User.AvatarUrl);
+    }
+
+    [Command("Ping")]
+    public async Task Ping(CommandContext ctx)
+    {
+        await ctx.RespondAsync($"Ping :{ctx.Client.Ping}ms");
+    }
 }

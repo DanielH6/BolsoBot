@@ -19,17 +19,15 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
+using Newtonsoft.Json;
 
-using System.Collections.Generic;
+namespace BolsoBot;
 
-using System.Linq;
-
-using System.Threading.Tasks;
-
-namespace BolsoBot.Commands;
-
-public class Moderation
+public struct ConfigJson
 {
-
+    [JsonProperty("token")]
+    public string Token { get; private set; }
+    
+    [JsonProperty("prefix")]
+    public string CommandPrefix { get; private set; }
 }

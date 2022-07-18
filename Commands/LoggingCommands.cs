@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 
 namespace BolsoBot.Commands;
 
-public class EventLogging
+public class LoggingCommands
 {
-
+    //not implemented yet
 }

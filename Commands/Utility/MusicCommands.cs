@@ -27,9 +27,9 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
-namespace BolsoBot.Commands;
+namespace BolsoBot.Commands.Utility;
 
-public class Utility
+public class Music
 {
 
 }

@@ -19,67 +19,13 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System.Text;
-
-using Microsoft.Extensions.Logging;
-
-using DSharpPlus;
-
-using Newtonsoft.Json;
-
 namespace BolsoBot;
 
 public class Program
 { 
     static void Main()
     {
-        MainAsync().GetAwaiter().GetResult();
+        var bot = new Bot();
+        bot.RunAsync().GetAwaiter().GetResult();
     }
-    static async Task MainAsync()
-    {       
-        var json = "";
-        using (var fs = File.OpenRead("config.json"))
-        using (var sr = new StreamReader(fs , new UTF8Encoding(false)))
-            json = await sr.ReadToEndAsync();
-        
-        var cfgJson = JsonConvert.DeserializeObject<ConfigJson>(json);
-        var cfg = new DiscordConfiguration
-        {
-            Token = cfgJson.Token,
-            TokenType = TokenType.Bot,
-
-            AutoReconnect = true,
-            MinimumLogLevel = LogLevel.Debug
-        };
-
-        var Client = new DiscordClient(cfg);
-
-        
-        Client.MessageCreated += async (client, msg) =>
-        {
-            if (msg.Message.Author.IsBot || !msg.Message
-                                                .Content
-                                                .ToLower()
-                                                .StartsWith(cfgJson.CommandPrefix)
-                )
-                return;
-            if (msg.Message.Content.ToLower().StartsWith($"{cfgJson.CommandPrefix} ping"))
-                await msg.Message.RespondAsync("pong!");
-        };
-        
-        await Client.ConnectAsync();
-        await Task.Delay(-1);
-    }
-}
-
-public struct ConfigJson
-{
-    [JsonProperty("token")]
-    public string Token { get; private set; }
-    
-    [JsonProperty("prefix")]
-    public string CommandPrefix { get; private set; }
-    
-    
-    
 }
