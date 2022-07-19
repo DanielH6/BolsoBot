@@ -1,4 +1,3 @@
-﻿using System.Net.Security;
 //MIT License
 //
 //Copyright (c) 2022 Daniel
@@ -20,9 +19,19 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using BolsoBot;
+using Microsoft.EntityFrameworkCore;
 
+namespace BolsoBot.Data;
 
+/// <summary>
+/// Not Implemented Yet
+/// </summary>
 
-var bot = new Bot();
-bot.RunAsync().GetAwaiter().GetResult();
+public class BolsoDataContext : DbContext
+{
+    public BolsoDataContext(DbContextOptions<BolsoDataContext> options)
+        : base(options)
+    {
+    
+    }
+}

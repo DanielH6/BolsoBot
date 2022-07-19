@@ -19,14 +19,39 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DSharpPlus;
 
-namespace BolsoBot.Commands;
+using DSharpPlus.CommandsNext;
 
-public class LevelCommands
+using DSharpPlus.CommandsNext.Attributes;
+
+using DSharpPlus.Entities;
+
+namespace BolsoBot.Commands.Moderation;
+
+public class UnBan : BaseCommandModule
 {
+    [
+        Command("unban"),
+        Description("Bans a member from the server")
+    ]
+    public async Task UnBanUser(CommandContext ctx, DiscordMember member, string reason)
+    {
+        await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
+        if ((await ctx.Guild.GetBanAsync(member.Id)) == null)
+        {
+            await ctx.RespondAsync($"{member.Mention} is not banned");
+
+            try
+            {
+                await ctx.Guild.UnbanMemberAsync(member, reason);
+                await ctx.RespondAsync($"{member.Mention} was unbanned");
+            }
+            catch (System.Exception ex)
+            {
+                await ctx.RespondAsync($"Failed to unban {member.Mention}");
+            }
+        }
+    }
 }

@@ -19,17 +19,37 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
+using DSharpPlus;
 
-using System.Collections.Generic;
+using DSharpPlus.CommandsNext;
 
-using System.Linq;
+using DSharpPlus.CommandsNext.Attributes;
 
-using System.Threading.Tasks;
+using DSharpPlus.Entities;
 
-namespace BolsoBot.Commands;
+using System.Text.RegularExpressions;
 
-public class LoggingCommands
+namespace BolsoBot.Commands.Moderation;
+
+public class Kick : BaseCommandModule
 {
-    //not implemented yet
+    [
+        Command("kick"), 
+        Description("Kicks a member from the server"), 
+        RequirePermissions(Permissions.KickMembers)
+    ]
+    public async Task KickMember(CommandContext ctx, DiscordMember member, string reason)
+    {
+        await ctx.TriggerTypingAsync().ConfigureAwait(false);
+
+        try
+        {
+            await member.RemoveAsync(reason);
+            await ctx.RespondAsync($"{member.Mention} {member.Id} was kicked");
+        }
+        catch (Exception ex)
+        {
+             await ctx.RespondAsync($"Failed to kick {member.Mention} {member.Id}");
+        }
+    }
 }

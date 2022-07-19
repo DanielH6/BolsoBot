@@ -84,9 +84,7 @@ public class Bot
         Commands = Client.UseCommandsNext(commandsConfig);
 
         // registering commands
-        Commands.RegisterCommands<ModerationCommands>();
-        Commands.RegisterCommands<RolesCommands>();
-        Commands.RegisterCommands<UtilityCommands>();
+        Commands.RegisterCommands(typeof(Program).Assembly);
 
         await Client.ConnectAsync();
 

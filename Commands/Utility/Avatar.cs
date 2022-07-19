@@ -1,4 +1,3 @@
-﻿using System.Net.Security;
 //MIT License
 //
 //Copyright (c) 2022 Daniel
@@ -20,9 +19,22 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using BolsoBot;
+using DSharpPlus.CommandsNext;
 
+using DSharpPlus.CommandsNext.Attributes;
 
+using DSharpPlus.Entities;
 
-var bot = new Bot();
-bot.RunAsync().GetAwaiter().GetResult();
+using DSharpPlus;
+
+namespace BolsoBot.Commands.Utility;
+
+public class Avatar : BaseCommandModule
+{
+    [
+        Command("avatar"),
+        Description("Gets the avatar of the specified user( if no user is specified then returns the requester avatar).")
+    ]
+    public async Task GetUserAvatar(CommandContext ctx, DiscordUser? user = null)
+        => await ctx.RespondAsync( user == null ? "User not found" : user.GetAvatarUrl(ImageFormat.Png, 4096));
+}
