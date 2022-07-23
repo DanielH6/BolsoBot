@@ -1,5 +1,4 @@
-﻿using System.Net.Security;
-//MIT License
+﻿//MIT License
 //
 //Copyright (c) 2022 Daniel
 //
@@ -20,9 +19,71 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using BolsoBot;
+using System;
 
+using System.Collections.Generic;
 
+using System.Linq;
 
-var bot = new Bot();
-bot.RunAsync().GetAwaiter().GetResult();
+using System.Text;
+
+using System.Threading.Tasks;
+
+using DSharpPlus;
+
+using DSharpPlus.CommandsNext;
+
+using DSharpPlus.EventArgs;
+
+using BolsoBot.Commands;
+
+using BolsoBot.Commands.Moderation;
+
+using BolsoBot.Commands.Utility;
+
+using Microsoft.Extensions.Logging;
+
+using Microsoft.Extensions.Configuration;
+
+namespace BolsoBot;
+
+public class Program
+{
+    public static DiscordClient Client { get; private set; }
+
+    public static CommandsNextExtension Commands { get; private set; }
+    static async Task Main()
+    {
+        var builder = new ConfigurationBuilder();
+        builder.AddJsonFile(Path.GetFullPath("config.json"), false, true);
+       IConfigurationRoot root = builder.Build();
+
+        var config = new DiscordConfiguration
+        {
+            Token = $"{root["token"]}",
+            TokenType = TokenType.Bot,
+
+            AutoReconnect = true,
+            MinimumLogLevel = LogLevel.Debug
+        };
+
+        Client = new DiscordClient(config);
+
+        var commandsConfig = new CommandsNextConfiguration
+        {
+            StringPrefixes = new string[] { $"{root["prefix"]}" },
+            EnableDms = false,
+            EnableMentionPrefix = true
+        };
+
+        Commands = Client.UseCommandsNext(commandsConfig);
+
+        // registering commands
+        Commands.RegisterCommands(typeof(Program).Assembly);
+
+        await Client.ConnectAsync();
+
+        await Task.Delay(-1);
+    }
+
+}

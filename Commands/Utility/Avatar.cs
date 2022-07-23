@@ -35,6 +35,9 @@ public class Avatar : BaseCommandModule
         Command("avatar"),
         Description("Gets the avatar of the specified user( if no user is specified then returns the requester avatar).")
     ]
-    public async Task GetUserAvatar(CommandContext ctx, DiscordUser? user = null)
-        => await ctx.RespondAsync( user == null ? "User not found" : user.GetAvatarUrl(ImageFormat.Png, 4096));
-}
+    public async Task GetUserAvatar(CommandContext ctx, [Description("The name of the user to get the avatar")] DiscordUser? user = null)
+        => await ctx.RespondAsync(
+                user == null ? ctx.Member.GetAvatarUrl(ImageFormat.Png, 4096)
+                : user.GetAvatarUrl(ImageFormat.Png, 4096)
+                );
+}   
