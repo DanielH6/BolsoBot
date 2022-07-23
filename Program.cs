@@ -54,6 +54,7 @@ public class Program
     public static CommandsNextExtension Commands { get; private set; }
     static async Task Main()
     {
+        //read more about configuration builder here <https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.configurationbuilder?view=dotnet-plat-ext-6.0>
         var builder = new ConfigurationBuilder();
         builder.AddJsonFile(Path.GetFullPath("config.json"), false, true);
        IConfigurationRoot root = builder.Build();
@@ -80,9 +81,9 @@ public class Program
 
         // registering commands
         Commands.RegisterCommands(typeof(Program).Assembly);
-
+        // connect to server and log in
         await Client.ConnectAsync();
-
+        // this is to prevent premature quitting
         await Task.Delay(-1);
     }
 

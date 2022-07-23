@@ -35,7 +35,7 @@ public class Ban : BaseCommandModule
         Description("Bans a Member From The Server"), 
         RequirePermissions(Permissions.BanMembers)
     ]
-    public async Task BanUser(CommandContext ctx, DiscordMember member, string reason)
+    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("The Reason Why The Member Will Be Banned")] string reason)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
