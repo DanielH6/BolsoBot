@@ -36,18 +36,20 @@ public class Kick : BaseCommandModule
         Description("Kicks a Member From The Server"), 
         RequirePermissions(Permissions.KickMembers)
     ]
-    public async Task KickMember(CommandContext ctx,[Description("Member To Kick")] DiscordMember member,[Description("The Reason To Kick The Member")] string reason )
+    public async Task KickMember(CommandContext ctx,[Description("Member To Kick")] DiscordMember member,[Description("The Reason To Kick The Member")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
         try
         {
             await member.RemoveAsync(reason);
-            await ctx.RespondAsync($"{member.Mention} {member.Id} was kicked");
         }
         catch (Exception ex)
         {
-             await ctx.RespondAsync($"Failed to kick {member.Mention} {member.Id}");
+             await ctx.RespondAsync($"Failed to kick {member.Mention}.");
+             return;
         }
+
+        await ctx.RespondAsync($"{member.Mention} was kicked.");
     }
 }

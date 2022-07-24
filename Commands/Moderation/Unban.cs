@@ -40,14 +40,9 @@ public class UnBan : BaseCommandModule
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
-        if (member is null)
-        {
-            await ctx.RespondAsync("Please specify a member to unban");
-            return;
-        }
         if ((await ctx.Guild.GetBanAsync(member.Id)) == null)
         {
-            await ctx.RespondAsync($"{member.Mention} is not banned");
+            await ctx.RespondAsync($"{member.Mention} is not banned.");
             return;
         }
         try
@@ -56,10 +51,10 @@ public class UnBan : BaseCommandModule
         }
         catch (System.Exception ex)
         {
-            await ctx.RespondAsync($"Failed to unban {member.Mention}");
+            await ctx.RespondAsync($"Failed to unban {member.Mention}.");
             return;
         }
 
-        await ctx.RespondAsync($"{member.Mention} was unbanned");
+        await ctx.RespondAsync($"{member.Mention} was unbanned.");
     }
 }

@@ -40,14 +40,9 @@ public class Ban : BaseCommandModule
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
-        if (member is null)
-        {
-            await ctx.RespondAsync("Please specify a member to ban");
-            return;
-        }
         if ((await ctx.Guild.GetBanAsync(member)) != null)
         {
-            await ctx.RespondAsync($"{member.Mention} is already banned");
+            await ctx.RespondAsync($"{member.Mention} is already banned.");
             return;
         }
 
@@ -57,10 +52,10 @@ public class Ban : BaseCommandModule
         }
         catch (System.Exception ex)
         {
-             await ctx.RespondAsync($"Failed to ban {member.Mention}");
+             await ctx.RespondAsync($"Failed to ban {member.Mention}.");
              return;
         }
 
-        await ctx.RespondAsync($"{member.Mention} was banned");
+        await ctx.RespondAsync($"{member.Mention} was banned.");
     }
 }
