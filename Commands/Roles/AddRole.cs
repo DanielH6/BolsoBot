@@ -44,7 +44,7 @@ public class AddRole : BaseCommandModule
         Description("Add a Role To The Specified Member"),
         RequirePermissions(Permissions.ManageRoles)
     ]
-    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To")] DiscordRole role,[Description("Reason To Add The Role To")] string reason)
+    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To Specified Member")] DiscordRole role,[Description("Reason To Add The Role To Specified Member")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
         

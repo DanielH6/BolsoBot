@@ -36,7 +36,7 @@ public class Ban : BaseCommandModule
         Description("Bans a Member From The Server"), 
         RequirePermissions(Permissions.BanMembers)
     ]
-    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("Delete the messages from the user in the past days (default is 0)")] ushort deleteMessageDays = 0,[Description("The Reason Why The Member Will Be Banned")] string? reason = null)
+    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("Delete the messages from the user in the past days (default is 0)")] ushort deleteMessageDays = 0,[Description("The Reason To Ban The Specified User")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 

@@ -36,7 +36,7 @@ public class UnBan : BaseCommandModule
         Description("Bans a Member From The Server"),
         RequirePermissions(Permissions.BanMembers)
     ]
-    public async Task UnBanUser(CommandContext ctx, [Description("The Member To Unban")] DiscordMember member, [Description("The Reason To Unban")] string? reason = null)
+    public async Task UnBanUser(CommandContext ctx, [Description("The User To Unban")] DiscordMember member, [Description("The Reason To Unban The Specified User")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
