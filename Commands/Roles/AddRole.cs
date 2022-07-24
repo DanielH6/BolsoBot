@@ -37,22 +37,16 @@ using DSharpPlus.CommandsNext.Attributes;
 
 namespace BolsoBot.Commands.Roles;
 
-public class AddRole
+public class AddRole : BaseCommandModule
 {
     [
         Command("addrole"),
         Description("Add a Role To The Specified Member"),
         RequirePermissions(Permissions.ManageRoles)
     ]
-    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To")] DiscordRole role)
+    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To")] DiscordRole role,[Description("Reason To Add The Role To")] string reason)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
-
-        if (member is null)
-        {
-            await ctx.RespondAsync("Please specify a member to add to the role.");
-            return;
-        }
         
         try
         {
