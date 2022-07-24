@@ -36,10 +36,15 @@ public class Ban : BaseCommandModule
         Description("Bans a Member From The Server"), 
         RequirePermissions(Permissions.BanMembers)
     ]
-    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("The Reason Why The Member Will Be Banned")] string reason)
+    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("Delete the messages from the user in the past days (default is 0)")] ushort deleteMessageDays = 0,[Description("The Reason Why The Member Will Be Banned")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
+        if (member is null)
+        {
+            await ctx.RespondAsync("Please specify a member to ban");
+            return;
+        }
         if ((await ctx.Guild.GetBanAsync(member)) != null)
         {
             await ctx.RespondAsync($"{member.Mention} is already banned");
@@ -48,12 +53,14 @@ public class Ban : BaseCommandModule
 
         try
         {
-            await ctx.Guild.BanMemberAsync(member.Id, 0,reason);
-            await ctx.RespondAsync($"{member.Mention} was banned");
+            await ctx.Guild.BanMemberAsync(member.Id, deleteMessageDays,reason);
         }
         catch (System.Exception ex)
         {
              await ctx.RespondAsync($"Failed to ban {member.Mention}");
+             return;
         }
+
+        await ctx.RespondAsync($"{member.Mention} was banned");
     }
 }
