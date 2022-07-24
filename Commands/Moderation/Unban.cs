@@ -35,23 +35,29 @@ public class UnBan : BaseCommandModule
         Command("unban"),
         Description("Bans a Member From The Server")
     ]
-    public async Task UnBanUser(CommandContext ctx,[Description("The Member To Unban")] DiscordMember member,[Description("The Reason To Unban")] string reason )
+    public async Task UnBanUser(CommandContext ctx, [Description("The Member To Unban")] DiscordMember member, [Description("The Reason To Unban")] string reason)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
+        if (member is null)
+        {
+            await ctx.RespondAsync("Please specify a member to unban");
+            return;
+        }
         if ((await ctx.Guild.GetBanAsync(member.Id)) == null)
         {
             await ctx.RespondAsync($"{member.Mention} is not banned");
-
-            try
-            {
-                await ctx.Guild.UnbanMemberAsync(member, reason);
-                await ctx.RespondAsync($"{member.Mention} was unbanned");
-            }
-            catch (System.Exception ex)
-            {
-                await ctx.RespondAsync($"Failed to unban {member.Mention}");
-            }
+            return;
         }
+        try
+        {
+            await ctx.Guild.UnbanMemberAsync(member, reason);
+        }
+        catch (System.Exception ex)
+        {
+            await ctx.RespondAsync($"Failed to unban {member.Mention}");
+        }
+
+        await ctx.RespondAsync($"{member.Mention} was unbanned");
     }
 }

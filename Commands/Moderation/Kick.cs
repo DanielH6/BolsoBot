@@ -27,8 +27,6 @@ using DSharpPlus.CommandsNext.Attributes;
 
 using DSharpPlus.Entities;
 
-using System.Text.RegularExpressions;
-
 namespace BolsoBot.Commands.Moderation;
 
 public class Kick : BaseCommandModule

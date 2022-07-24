@@ -19,41 +19,51 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using DSharpPlus.CommandsNext;
+using System;
 
-using DSharpPlus.CommandsNext.Attributes;
+using System.Collections.Generic;
+
+using System.Linq;
+
+using System.Threading.Tasks;
 
 using DSharpPlus;
 
 using DSharpPlus.Entities;
 
-namespace BolsoBot.Commands.Moderation;
+using DSharpPlus.CommandsNext;
 
-public class Ban : BaseCommandModule
+using DSharpPlus.CommandsNext.Attributes;
+
+namespace BolsoBot.Commands.Roles;
+
+public class AddRole
 {
     [
-        Command("ban"), 
-        Description("Bans a Member From The Server"), 
-        RequirePermissions(Permissions.BanMembers)
+        Command("addrole"),
+        Description("Add a Role To The Specified Member"),
+        RequirePermissions(Permissions.ManageRoles)
     ]
-    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("The Reason Why The Member Will Be Banned")] string reason)
+    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To")] DiscordRole role)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
-        if ((await ctx.Guild.GetBanAsync(member)) != null)
+        if (member is null)
         {
-            await ctx.RespondAsync($"{member.Mention} is already banned");
+            await ctx.RespondAsync("Please specify a member to add to the role.");
             return;
         }
-
+        
         try
         {
-            await ctx.Guild.BanMemberAsync(member.Id, 0,reason);
-            await ctx.RespondAsync($"{member.Mention} was banned");
+            await member.GrantRoleAsync(role);
         }
         catch (System.Exception ex)
         {
-             await ctx.RespondAsync($"Failed to ban {member.Mention}");
+             await ctx.RespondAsync("Could not add the role to the member.");
+             return;
         }
+
+        await ctx.RespondAsync("The role was successfully added.");
     }
 }
