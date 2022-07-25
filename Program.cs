@@ -59,12 +59,6 @@ public class Program
     
     static async Task Main()
     {
-        IServiceCollection services = new ServiceCollection();
-        services.AddDbContext<BolsoDataContext>();
-        /// <summary>
-        /// read more about configuration builder here
-        /// <see cref=https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.configuration.configurationbuilder?view=dotnet-plat-ext-6.0/>
-        /// </summary>
         var builder = new ConfigurationBuilder();
         builder.AddJsonFile(Path.GetFullPath("config.json"), false, true);
        IConfigurationRoot root = builder.Build();
