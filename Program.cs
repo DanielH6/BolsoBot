@@ -19,13 +19,76 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
+using System;
+
+using System.Collections.Generic;
+
+using System.Linq;
+
+using System.Text;
+
+using System.Threading.Tasks;
+
+using DSharpPlus;
+
+using DSharpPlus.CommandsNext;
+
+using DSharpPlus.EventArgs;
+
+using BolsoBot.Data;
+
+using BolsoBot.Commands;
+
+using BolsoBot.Commands.Moderation;
+
+using BolsoBot.Commands.Utility;
+
+using Microsoft.Extensions.Logging;
+
+using Microsoft.Extensions.Configuration;
+
+using Microsoft.Extensions.DependencyInjection;
+
 namespace BolsoBot;
 
 public class Program
-{ 
-    static void Main()
+{
+    public static DiscordClient Client { get; private set; }
+
+    public static CommandsNextExtension Commands { get; private set; }
+    
+    static async Task Main()
     {
-        var bot = new Bot();
-        bot.RunAsync().GetAwaiter().GetResult();
+        var builder = new ConfigurationBuilder();
+        builder.AddJsonFile(Path.GetFullPath("config.json"), false, true);
+       IConfigurationRoot root = builder.Build();
+
+        var config = new DiscordConfiguration
+        {
+            Token = $"{root["token"]}",
+            TokenType = TokenType.Bot,
+
+            AutoReconnect = true,
+            MinimumLogLevel = LogLevel.Debug
+        };
+
+        Client = new DiscordClient(config);
+
+        var commandsConfig = new CommandsNextConfiguration
+        {
+            StringPrefixes = new string[] { $"{root["prefix"]}" },
+            EnableDms = false,
+            EnableMentionPrefix = true
+        };
+
+        Commands = Client.UseCommandsNext(commandsConfig);
+
+        // registering commands
+        Commands.RegisterCommands(typeof(Program).Assembly);
+        // connect to server and log in
+        await Client.ConnectAsync();
+        // this is to prevent premature quitting
+        await Task.Delay(-1);
     }
+
 }

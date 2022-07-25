@@ -27,66 +27,37 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
-using DSharpPlus.CommandsNext;
-
-using System.Text.RegularExpressions;
-
 using DSharpPlus;
 
 using DSharpPlus.Entities;
 
+using DSharpPlus.CommandsNext;
+
 using DSharpPlus.CommandsNext.Attributes;
 
-namespace BolsoBot.Commands.Moderation;
+namespace BolsoBot.Commands.Roles;
 
-[Group("Roles")]
-[Description("Manage roles")]
-[RequirePermissions(Permissions.ManageRoles)]
-public class RolesCommands : BaseCommandModule
+public class AddRole : BaseCommandModule
 {
     [
         Command("addrole"),
-        Description("Add a Role Someone"),
+        Description("Add a Role To The Specified Member"),
         RequirePermissions(Permissions.ManageRoles)
     ]
-    public async Task AddRole(CommandContext ctx, DiscordMember member, DiscordRole role)
+    public async Task GiveRole(CommandContext ctx,[Description("Member To Add The Role To")] DiscordMember member,[Description("Role To Add To Specified Member")] DiscordRole role,[Description("Reason To Add The Role To Specified Member")] string? reason = null)
     {
         await ctx.TriggerTypingAsync().ConfigureAwait(false);
+        
         try
         {
-            var newRole = ctx.Guild.GetRole(role.Id);
-            await member.GrantRoleAsync(newRole);
-            await member.ModifyAsync(m => {
-                m.AuditLogReason = $"Edited by {ctx.User.Username} {ctx.User.Id}";
-            });
-            await ctx.RespondAsync("Role added");
-        }
-        catch (Exception ex)
-        {
-            await ctx.RespondAsync("Could not assign role");
-        }
-    }
-
-    [
-        Command("removerole"),
-        Description("Remove a Role From Someone")
-    ]
-    public async Task RemoveRole(CommandContext ctx, DiscordMember member, DiscordRole role)
-    {
-        await ctx.TriggerTypingAsync().ConfigureAwait(false);
-
-        try
-        {
-            var newRole = ctx.Guild.GetRole(role.Id);
-            await member.RevokeRoleAsync(newRole);
-            await member.ModifyAsync(m => {
-                m.AuditLogReason = $"Edited by {ctx.User.Username} {ctx.User.Id}";
-            });
-            await ctx.RespondAsync("Role removed");
+            await member.GrantRoleAsync(role);
         }
         catch (System.Exception ex)
         {
-            await ctx.RespondAsync("Could not remove");
+             await ctx.RespondAsync("Could not add the role to the member.");
+             return;
         }
+
+        await ctx.RespondAsync("The role was successfully added.");
     }
 }

@@ -19,43 +19,43 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
-
-using System.Collections.Generic;
-
-using System.Linq;
-
-using System.Threading.Tasks;
-
-using System.Text.RegularExpressions;
+using DSharpPlus.CommandsNext;
 
 using DSharpPlus.CommandsNext.Attributes;
 
-using DSharpPlus.CommandsNext;
+using DSharpPlus;
 
 using DSharpPlus.Entities;
 
-namespace BolsoBot.Commands.Utility;
+namespace BolsoBot.Commands.Moderation;
 
-[Group("utility")]
-[Description("Miscellaneous Commands")]
-public class UtilityCommands : BaseCommandModule
+public class Ban : BaseCommandModule
 {
-    [Command("avatar")]
-    public async Task GetUserAvatar(CommandContext ctx, DiscordMember member)
+    [
+        Command("ban"), 
+        Description("Bans a Member From The Server"), 
+        RequirePermissions(Permissions.BanMembers)
+    ]
+    public async Task BanUser(CommandContext ctx,[Description("The User To Ban From The Server")] DiscordMember member,[Description("Delete the messages from the user in the past days (default is 0)")] ushort deleteMessageDays = 0,[Description("The Reason To Ban The Specified User")] string? reason = null)
     {
-        await ctx.Channel.SendMessageAsync(member.AvatarUrl);
-    }
+        await ctx.TriggerTypingAsync().ConfigureAwait(false);
 
-    [Command("avatar")]
-    public async Task GetUserAvatar(CommandContext ctx)
-    {
-        await ctx.Channel.SendMessageAsync(ctx.User.AvatarUrl);
-    }
+        if ((await ctx.Guild.GetBanAsync(member)) != null)
+        {
+            await ctx.RespondAsync($"{member.Mention} is already banned.");
+            return;
+        }
 
-    [Command("Ping")]
-    public async Task Ping(CommandContext ctx)
-    {
-        await ctx.RespondAsync($"Ping :{ctx.Client.Ping}ms");
+        try
+        {
+            await ctx.Guild.BanMemberAsync(member.Id, deleteMessageDays,reason);
+        }
+        catch (System.Exception ex)
+        {
+             await ctx.RespondAsync($"Failed to ban {member.Mention}.");
+             return;
+        }
+
+        await ctx.RespondAsync($"{member.Mention} was banned.");
     }
 }

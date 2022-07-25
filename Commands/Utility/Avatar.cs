@@ -19,14 +19,25 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DSharpPlus.CommandsNext;
 
-namespace BolsoBot.Commands;
+using DSharpPlus.CommandsNext.Attributes;
 
-public class LevelCommands
+using DSharpPlus.Entities;
+
+using DSharpPlus;
+
+namespace BolsoBot.Commands.Utility;
+
+public class Avatar : BaseCommandModule
 {
-
-}
+    [
+        Command("avatar"),
+        Description("Gets The Avatar Of The Specified User( If No User Is Specified Then Returns The Requester Avatar).")
+    ]
+    public async Task GetUserAvatar(CommandContext ctx, [Description("The name of the user to get the avatar")] DiscordUser? user = null)
+        => await ctx.RespondAsync(
+                user == null ? ctx.Member.GetAvatarUrl(ImageFormat.Png, 4096)
+                : user.GetAvatarUrl(ImageFormat.Png, 4096)
+                );
+}   

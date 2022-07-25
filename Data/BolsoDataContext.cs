@@ -19,15 +19,19 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 
-namespace BolsoBot;
+namespace BolsoBot.Data;
 
-public struct ConfigJson
+/// <summary>
+/// Not Implemented Yet
+/// </summary>
+
+public class BolsoDataContext : DbContext
 {
-    [JsonProperty("token")]
-    public string Token { get; private set; }
+    public BolsoDataContext(DbContextOptions<BolsoDataContext> options)
+        : base(options)
+    {
     
-    [JsonProperty("prefix")]
-    public string CommandPrefix { get; private set; }
+    }
 }

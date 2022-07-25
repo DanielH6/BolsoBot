@@ -27,9 +27,36 @@ using System.Linq;
 
 using System.Threading.Tasks;
 
-namespace BolsoBot.Commands.Utility;
+using DSharpPlus.CommandsNext;
 
-public class Music
+using DSharpPlus.CommandsNext.Attributes;
+
+using DSharpPlus.Entities;
+
+using DSharpPlus;
+
+namespace BolsoBot.Commands.Roles;
+
+public class RemoveRole : BaseCommandModule
 {
+    [
+        Command("removerole"),
+        Description("Removes a role from the Specified member"),
+        RequirePermissions(Permissions.ManageRoles)
+    ]
+    public async Task TakeRole(CommandContext ctx,[Description("Member To Remove Role From")] DiscordMember member,[Description("Role To Remove From The Specified Member")]DiscordRole role,[Description("Reason To Remove Role From The Specified Member")] string? reason = null)
+    {
+        await ctx.TriggerTypingAsync().ConfigureAwait(false); 
 
+        try
+        {
+            await member.RevokeRoleAsync(role, reason);
+        }
+        catch (System.Exception ex)
+        {
+            await ctx.RespondAsync("Could not remove the role from the member");
+        }
+
+        await ctx.RespondAsync("The role was successfully removed.");
+    }
 }

@@ -19,17 +19,18 @@
 //LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
-using System;
+using DSharpPlus.CommandsNext.Attributes;
 
-using System.Collections.Generic;
+using DSharpPlus.CommandsNext;
 
-using System.Linq;
+namespace BolsoBot.Commands.Utility;
 
-using System.Threading.Tasks;
-
-namespace BolsoBot.Commands;
-
-public class LoggingCommands
+public class Ping : BaseCommandModule
 {
-    //not implemented yet
+    [
+        Command("ping"),
+        Description("Checks The Latency Between The Bot And Discord")
+    ]
+    public async Task PingAsync(CommandContext ctx)
+        => await ctx.RespondAsync($"Ping :{ctx.Client.Ping}ms");
 }
